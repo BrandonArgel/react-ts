@@ -1,17 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { toast } from 'sonner'
 import { Button, Card } from '@/components/ui'
+import { useClipboard } from '@/hooks'
 import { cn } from '@/lib'
 
-export const PasswordDisplay = ({ password }: { password: string }) => {
-  const [copied, setCopied] = useState(false)
+interface PasswordDisplayProps {
+  password: string
+}
 
-  const handleCopy = () => {
-    if (!password) return
-    navigator.clipboard.writeText(password)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+export const PasswordDisplay = ({ password }: PasswordDisplayProps) => {
+  const { copied, copy } = useClipboard()
+
+  const handleCopy = (text: string) => {
+    if (!text) return
+    copy(text)
+    toast.success('Password copied to clipboard')
   }
 
   return (
@@ -25,7 +29,7 @@ export const PasswordDisplay = ({ password }: { password: string }) => {
       <Button
         variant={copied ? 'success' : 'primary'}
         className={cn(copied && 'animate-copy-pop')}
-        onClick={handleCopy}
+        onClick={() => handleCopy(password)}
         disabled={!password}
       >
         {copied ? 'Copied' : 'Copy'}

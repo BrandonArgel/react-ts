@@ -1,4 +1,4 @@
-import { getPerfectlySecureRandomNumber } from '@/lib/randonmNumber'
+import { getRandomNumber } from '@/lib/randonmNumber'
 
 interface Config {
   length: number
@@ -32,14 +32,14 @@ export const generatePassword = (config: Config) => {
 
   if (config.number) {
     for (let i = 0; i < config.minNumbers; i++) {
-      passwordArr.push(sets.number[getPerfectlySecureRandomNumber(0, sets.number.length - 1)])
+      passwordArr.push(sets.number[getRandomNumber(0, sets.number.length - 1)])
     }
     pool += sets.number
   }
 
   if (config.special) {
     for (let i = 0; i < config.minSpecial; i++) {
-      passwordArr.push(sets.special[getPerfectlySecureRandomNumber(0, sets.special.length - 1)])
+      passwordArr.push(sets.special[getRandomNumber(0, sets.special.length - 1)])
     }
     pool += sets.special
   }
@@ -50,12 +50,12 @@ export const generatePassword = (config: Config) => {
   if (!pool) return ''
 
   while (passwordArr.length < config.length) {
-    passwordArr.push(pool[getPerfectlySecureRandomNumber(0, pool.length - 1)])
+    passwordArr.push(pool[getRandomNumber(0, pool.length - 1)])
   }
 
   // Algorithm Fisher-Yates Shuffle
   for (let i = passwordArr.length - 1; i > 0; i--) {
-    const j = getPerfectlySecureRandomNumber(0, i)
+    const j = getRandomNumber(0, i)
     ;[passwordArr[i], passwordArr[j]] = [passwordArr[j], passwordArr[i]]
   }
 
@@ -123,9 +123,10 @@ export const getTimeToCrack = (password: string): string => {
   return 'Eons (Practically unbreakable)'
 }
 
-export type SecurityLevel = 'low' | 'mid' | 'high' | 'safe'
+export type SecurityLevel = 'low' | 'mid' | 'high' | 'safe' | 'N/A'
 
 export const getSecurityLevelByScore = (score: number): SecurityLevel => {
+  if (score === 0) return 'N/A'
   if (score <= 2) return 'low'
   if (score === 3) return 'mid'
   if (score === 4) return 'high'
@@ -134,6 +135,7 @@ export const getSecurityLevelByScore = (score: number): SecurityLevel => {
 
 export const getSecurityLevel = (time: string): SecurityLevel => {
   const t = time.toLowerCase()
+  if (!time || t === 'n/a') return 'N/A'
   if (t.includes('sec') || t.includes('instan') || t.includes('min')) return 'low'
   if (t.includes('hour') || t.includes('day')) return 'mid'
   if (t.includes('year') && !t.includes('centur')) return 'high'

@@ -1,5 +1,5 @@
 import { cn } from '@/lib'
-import { SecurityLevel } from '../utils/password-utils'
+import { SecurityLevel } from '../../features/password-generator/utils/password-utils'
 
 interface StrengthMeterProps {
   level: SecurityLevel
@@ -7,6 +7,7 @@ interface StrengthMeterProps {
 }
 
 const levelConfig: Record<SecurityLevel, { label: string; color: string }> = {
+  'N/A': { label: 'N/A', color: 'bg-gray-500' },
   low: { label: 'Weak', color: 'bg-security-low' },
   mid: { label: 'Moderate', color: 'bg-security-mid' },
   high: { label: 'Strong', color: 'bg-security-high' },

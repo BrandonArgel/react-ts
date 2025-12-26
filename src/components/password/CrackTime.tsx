@@ -6,6 +6,7 @@ import { cn } from '@/lib'
 const crackTimeVariants = cva('mt-4 transition-all duration-500 border', {
   variants: {
     level: {
+      'N/A': 'text-gray-500 bg-gray-500/10 border-gray-500/20',
       low: 'text-security-low bg-security-low/10 border-security-low/20',
       mid: 'text-security-mid bg-security-mid/10 border-security-mid/20',
       high: 'text-security-high bg-security-high/10 border-security-high/20',
@@ -21,7 +22,7 @@ interface CrackTimeProps extends VariantProps<typeof crackTimeVariants> {
   time: string
 }
 
-export const CrackTime = ({ time, level = 'low' }: CrackTimeProps) => {
+export const CrackTime = ({ time, level }: CrackTimeProps) => {
   return (
     <Card variant="ghost" padding="sm" className={cn(crackTimeVariants({ level }))}>
       <div className="flex justify-between items-center">

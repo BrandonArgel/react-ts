@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { Card, Checkbox } from '@components/ui'
-import { GeneratorOptions, OnOptionChange } from '../types'
+import { GeneratorOptions, OnOptionChange } from '../../features/password-generator/types'
 
 interface OptionsSectionProps {
   options: GeneratorOptions

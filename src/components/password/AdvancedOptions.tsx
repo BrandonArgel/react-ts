@@ -1,5 +1,5 @@
 import { Card, Checkbox, Input } from '@components/ui'
-import { GeneratorOptions, OnOptionChange } from '../types'
+import { GeneratorOptions, OnOptionChange } from '../../features/password-generator/types'
 
 interface Props {
   options: GeneratorOptions

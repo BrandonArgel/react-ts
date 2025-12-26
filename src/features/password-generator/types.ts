@@ -1,3 +1,22 @@
+export const DEFAULT_LENGTH = 16
+export const MIN_LENGTH = 5
+export const MAX_LENGTH = 128
+
+export const DEFAULT_OPTIONS: GeneratorOptions = {
+  upper: true,
+  lower: true,
+  number: true,
+  special: false,
+  avoidAmbiguous: false,
+  minNumbers: 2,
+  minSpecial: 2
+}
+
+export const DEFAULT_SETTINGS = {
+  strength: true,
+  crackTime: true
+}
+
 export interface GeneratorOptions {
   upper: boolean
   lower: boolean

@@ -1,5 +1,4 @@
-import { getPerfectlySecureRandomNumber } from '@/utils/randonmNumber'
-import { GeneratorOptions } from '@/types/generator'
+import { getPerfectlySecureRandomNumber } from '@/lib/randonmNumber'
 
 interface Config {
   length: number
@@ -10,25 +9,6 @@ interface Config {
   avoidAmbiguous: boolean
   minNumbers: number
   minSpecial: number
-}
-
-export const DEFAULT_LENGTH = 16
-export const MIN_LENGTH = 5
-export const MAX_LENGTH = 128
-
-export const DEFAULT_OPTIONS: GeneratorOptions = {
-  upper: true,
-  lower: true,
-  number: true,
-  special: false,
-  avoidAmbiguous: false,
-  minNumbers: 2,
-  minSpecial: 2
-}
-
-export const DEFAULT_SETTINGS = {
-  strength: true,
-  crackTime: true
 }
 
 export const generatePassword = (config: Config) => {
@@ -141,4 +121,21 @@ export const getTimeToCrack = (password: string): string => {
   const centuries = Math.floor(seconds / 3153600000)
   if (centuries < 1000) return `${centuries} centuries`
   return 'Eons (Practically unbreakable)'
+}
+
+export type SecurityLevel = 'low' | 'mid' | 'high' | 'safe'
+
+export const getSecurityLevelByScore = (score: number): SecurityLevel => {
+  if (score <= 2) return 'low'
+  if (score === 3) return 'mid'
+  if (score === 4) return 'high'
+  return 'safe'
+}
+
+export const getSecurityLevel = (time: string): SecurityLevel => {
+  const t = time.toLowerCase()
+  if (t.includes('sec') || t.includes('instan') || t.includes('min')) return 'low'
+  if (t.includes('hour') || t.includes('day')) return 'mid'
+  if (t.includes('year') && !t.includes('centur')) return 'high'
+  return 'safe'
 }

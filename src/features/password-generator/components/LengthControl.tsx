@@ -1,5 +1,5 @@
-import { Input } from '../ui/Input'
-import { cn } from '@/utils/cn'
+import { Input } from '@/components/ui'
+import { cn } from '@/lib/cn'
 
 interface LengthControlProps {
   length: number
@@ -53,9 +53,9 @@ export const LengthControl = ({ length, minLength, maxLength, isControlDisabled,
             value={length}
             onChange={(e) => onChange(parseInt(e.target.value))}
             className={cn(
-              'w-full h-2 bg-surface rounded-lg appearance-none transition-all',
+              'w-full h-2 bg-border-subtle rounded-lg appearance-none transition-all',
               'accent-primary enabled:cursor-pointer enabled:active:cursor-grabbing',
-              'disabled:cursor-not-allowed disabled:opacity-50' // Opacidad ayuda visualmente
+              'disabled:cursor-not-allowed disabled:opacity-50'
             )}
             disabled={isControlDisabled}
           />

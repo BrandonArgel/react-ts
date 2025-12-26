@@ -1,6 +1,6 @@
 import { memo } from 'react'
-import { Checkbox } from '../ui/Checkbox'
-import { GeneratorOptions, OnOptionChange } from '@/types/generator'
+import { Card, Checkbox } from '@components/ui'
+import { GeneratorOptions, OnOptionChange } from '../types'
 
 interface OptionsSectionProps {
   options: GeneratorOptions
@@ -9,7 +9,7 @@ interface OptionsSectionProps {
 
 const OptionsSectionImpl = ({ options, onChange }: OptionsSectionProps) => {
   return (
-    <section className="bg-surface/50 p-4 rounded-xl border border-border space-y-4">
+    <Card as="section" variant="secondary" padding="sm" className="space-y-4 border-white/5 bg-surface/30">
       <h3 className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em]">Include Characters</h3>
       <div className="grid grid-cols-2 gap-y-4 gap-x-6">
         <Checkbox label="a-z" checked={options.lower} onChange={() => onChange('lower', !options.lower)} />
@@ -17,7 +17,7 @@ const OptionsSectionImpl = ({ options, onChange }: OptionsSectionProps) => {
         <Checkbox label="0-9" checked={options.number} onChange={() => onChange('number', !options.number)} />
         <Checkbox label="!@#$%^&*" checked={options.special} onChange={() => onChange('special', !options.special)} />
       </div>
-    </section>
+    </Card>
   )
 }
 

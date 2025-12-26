@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '@/utils'
+import { cn } from '@/lib'
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50 disabled:pointer-events-none active:scale-95',
@@ -10,7 +10,8 @@ const buttonVariants = cva(
         primary: 'bg-primary text-white hover:bg-primary-hover shadow-lg shadow-primary/20',
         secondary: 'bg-surface text-white border border-border hover:bg-surface-hover',
         ghost: 'bg-transparent hover:bg-white/10 text-text-muted hover:text-white',
-        danger: 'bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20'
+        danger: 'bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20',
+        success: 'bg-security-safe text-white hover:opacity-90 shadow-lg shadow-security-safe/20'
       },
       size: {
         sm: 'px-3 py-1.5 text-xs gap-1.5',
@@ -26,17 +27,10 @@ const buttonVariants = cva(
   }
 )
 
-// Definimos la interfaz incluyendo la prop ref de forma nativa
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   ref?: React.Ref<HTMLButtonElement>
 }
 
 export const Button = ({ className, variant, size, ref, ...props }: ButtonProps) => {
-  return (
-    <button
-      ref={ref} // Recibimos ref directamente de las props
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  )
+  return <button ref={ref} className={cn(buttonVariants({ variant, size, className }))} {...props} />
 }

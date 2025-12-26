@@ -1,6 +1,5 @@
-import { Checkbox } from '../ui/Checkbox'
-import { Input } from '../ui/Input'
-import { GeneratorOptions, OnOptionChange } from '@/types/generator'
+import { Card, Checkbox, Input } from '@components/ui'
+import { GeneratorOptions, OnOptionChange } from '../types'
 
 interface Props {
   options: GeneratorOptions
@@ -11,7 +10,7 @@ interface Props {
 
 export const AdvancedOptions = ({ options, onOptionChange, onMinNumbersChange, onMinSpecialChange }: Props) => {
   return (
-    <section className="bg-surface/50 p-4 rounded-xl border border-border space-y-4">
+    <Card as="section" variant="secondary" padding="sm" className="space-y-4 border-white/5 bg-surface/30">
       <Checkbox
         label="Avoid Ambiguous Characters"
         checked={options.avoidAmbiguous}
@@ -28,7 +27,7 @@ export const AdvancedOptions = ({ options, onOptionChange, onMinNumbersChange, o
             value={options.minNumbers}
             disabled={!options.number}
             onChange={(e) => onMinNumbersChange(parseInt(e.target.value) || 0)}
-            className="bg-[#121826] text-center disabled:opacity-30"
+            className="bg-surface text-center disabled:opacity-30"
           />
         </div>
         <div className="flex flex-col gap-1">
@@ -40,10 +39,10 @@ export const AdvancedOptions = ({ options, onOptionChange, onMinNumbersChange, o
             value={options.minSpecial}
             disabled={!options.special}
             onChange={(e) => onMinSpecialChange(parseInt(e.target.value) || 0)}
-            className="bg-[#121826] text-center disabled:opacity-30"
+            className="bg-surface text-center disabled:opacity-30"
           />
         </div>
       </div>
-    </section>
+    </Card>
   )
 }

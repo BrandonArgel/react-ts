@@ -1,5 +1,5 @@
 import { ChevronDown } from 'lucide-react'
-import { Checkbox } from '../ui'
+import { Checkbox } from '@components/ui'
 
 interface VisibilitySelectorProps {
   showStrength: boolean

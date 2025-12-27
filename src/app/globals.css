@@ -16,6 +16,26 @@
     -moz-appearance: textfield;
     appearance: textfield;
   }
+
+  /* Hide password reveal and clear buttons in Edge */
+  input::-ms-reveal,
+  input::-ms-clear {
+    display: none;
+  }
+
+  /* Hide password reveal button in WebKit browsers */
+  input::-webkit-password-reveal {
+    display: none;
+  }
+
+  /* Hide autofill buttons in WebKit browsers */
+  input::-webkit-contacts-auto-fill-button,
+  input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+  }
 }
 
 @theme {
@@ -141,7 +161,6 @@ body {
   user-select: none;
 }
 
-/* Fuerza el cursor pointer incluso si el mouse se sale un poco del track */
 input[type='range'] {
   cursor: pointer;
 }

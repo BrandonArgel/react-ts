@@ -11,8 +11,8 @@ import { CrackTime } from '@components/password'
 import { useDebounce } from '@/hooks'
 
 export default function ValidatorCard() {
-  const [inputValue, setInputValue] = useState('')
-  const debouncedInput = useDebounce(inputValue, 500)
+  const [password, setPassword] = useState('')
+  const debouncedInput = useDebounce(password, 500)
   const score = useMemo(() => getStrength(debouncedInput), [debouncedInput])
   const crackTime = useMemo(() => getTimeToCrack(debouncedInput), [debouncedInput])
   const securityLevel = useMemo(() => getSecurityLevel(crackTime), [crackTime])
@@ -25,14 +25,16 @@ export default function ValidatorCard() {
       </CardHeader>
 
       <CardContent>
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex gap-2 items-center">
           <Input
             type="password"
             placeholder="Enter password to validate"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <span className="text-sm text-gray-400">{inputValue.length}</span>
+          <div className="h-10 w-10 flex items-center justify-center bg-surface border border-border rounded-lg font-mono text-sm text-primary">
+            {password.length}
+          </div>
         </div>
 
         <div className="space-y-2">

@@ -1,4 +1,3 @@
-// src/modules/password-generator/components/HistoryLog.tsx
 import { motion, AnimatePresence } from 'framer-motion'
 import { Trash2 } from 'lucide-react'
 import { Button, Tooltip } from '@/components/ui'

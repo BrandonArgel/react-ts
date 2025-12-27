@@ -85,12 +85,24 @@ export const getStrength = (password: string) => {
   if (diversityCount >= 3) score += 1
   if (diversityCount === 4) score += 1
 
-  // 3. Penalties
+  // Penalties
   // Repetitions (aaa, 111)
   if (/(.)\1{2,}/.test(password)) score -= 1
 
-  // Common sequences (optional but recommended)
-  // If only numbers or only letters, subtract 1
+  let hasSequence = false
+  for (let i = 0; i < password.length - 2; i++) {
+    const char1 = password.charCodeAt(i)
+    const char2 = password.charCodeAt(i + 1)
+    const char3 = password.charCodeAt(i + 2)
+
+    if (char2 === char1 + 1 && char3 === char2 + 1) hasSequence = true
+    // Descending sequence (cba, 321)
+    if (char2 === char1 - 1 && char3 === char2 - 1) hasSequence = true
+  }
+
+  if (hasSequence) score -= 1
+
+  // Only letters or only numbers
   if (/^\d+$/.test(password) || /^[a-zA-Z]+$/.test(password)) score -= 1
 
   return Math.max(1, Math.min(score, 5))

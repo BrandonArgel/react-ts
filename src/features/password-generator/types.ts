@@ -6,10 +6,10 @@ export const DEFAULT_OPTIONS: GeneratorOptions = {
   upper: true,
   lower: true,
   number: true,
-  special: false,
+  special: true,
   avoidAmbiguous: false,
-  minNumbers: 2,
-  minSpecial: 2
+  minNumbers: 1,
+  minSpecial: 1
 }
 
 export const DEFAULT_SETTINGS = {

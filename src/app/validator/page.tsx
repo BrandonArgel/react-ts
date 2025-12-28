@@ -8,7 +8,7 @@ const ValidatortorCard = dynamic(() => import('@/features/password-validator/Val
 
 export default function PasswordValidatorPage() {
   return (
-    <main className="flex flex-col items-center justify-center p-4">
+    <main className="flex flex-col items-center justify-center p-4 select-none">
       <div className="w-full max-w-md">
         <ValidatortorCard />
       </div>

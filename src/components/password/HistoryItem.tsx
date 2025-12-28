@@ -18,7 +18,7 @@ export const HistoryItem = ({ pw }: HistoryItemProps) => {
 
   return (
     <Card variant="secondary" padding="sm" className="flex justify-between items-center border-white/5 bg-surface/30">
-      <span className="font-mono text-sm truncate pr-4 text-gray-300">{pw}</span>
+      <span className="font-mono text-sm truncate pr-4 text-gray-300 select-all">{pw}</span>
 
       <Tooltip content="Copy password">
         <Button variant="ghost" size="icon" onClick={() => handleCopy(pw)}>

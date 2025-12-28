@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           duration={2000}
           richColors
         />
-        <nav className="w-full max-w-md mt-10 mb-6 px-4">
+        <nav className="w-full max-w-md mt-10 mb-6 px-4 select-none">
           <Card variant="glass" padding="xs" className="flex justify-center gap-1 border-white/5 rounded-2xl">
             <NavLink href="/generator" active={pathname === '/generator'}>
               Generator
@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </Card>
         </nav>
 
-        <main className="w-full max-w-2xl px-4 flex-1">{children}</main>
+        <main className="w-full max-w-2xl px-4 flex-1 select-none">{children}</main>
       </body>
     </html>
   )

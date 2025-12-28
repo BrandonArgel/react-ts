@@ -23,7 +23,7 @@ export const PasswordDisplay = ({ password, onRegenerate }: PasswordDisplayProps
   return (
     <Card variant="secondary" padding="sm" className="mb-6 flex justify-between items-center gap-4 group min-h-16">
       <span
-        className={`font-password text-lg break-all ${!password ? 'text-text-muted italic' : 'text-white font-medium'}`}
+        className={`font-password text-lg break-all select-all ${!password ? 'text-text-muted italic' : 'text-white font-medium'}`}
       >
         {password || 'Select options to generate...'}
       </span>

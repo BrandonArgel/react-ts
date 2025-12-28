@@ -28,6 +28,7 @@ export const Input = ({ label, error, className, type = 'text', ref, ...props }:
           className={cn(
             'w-full bg-surface border border-gray-700 rounded-md p-2 text-sm',
             'transition-all duration-200 outline-none',
+            'select-none',
             'focus:ring-1 focus:ring-blue-500',
             'disabled:opacity-50 disabled:cursor-not-allowed',
             isPassword && 'pr-10',

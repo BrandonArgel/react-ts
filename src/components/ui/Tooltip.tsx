@@ -16,8 +16,16 @@ export const Tooltip = ({ children, content, className }: TooltipProps) => {
 
   return (
     <TooltipPrimitive.Provider delayDuration={200}>
-      <TooltipPrimitive.Root open={open} onOpenChange={setOpen}>
-        <TooltipPrimitive.Trigger asChild>{children}</TooltipPrimitive.Trigger>
+      <TooltipPrimitive.Root open={open} onOpenChange={setOpen} disableHoverableContent>
+        <TooltipPrimitive.Trigger
+          asChild
+          onTouchStart={() => setOpen(true)}
+          onPointerDown={(e) => {
+            if (e.pointerType === 'touch') setOpen(!open)
+          }}
+        >
+          {children}
+        </TooltipPrimitive.Trigger>
 
         <AnimatePresence>
           {open && (
@@ -25,6 +33,9 @@ export const Tooltip = ({ children, content, className }: TooltipProps) => {
               <TooltipPrimitive.Content
                 asChild
                 sideOffset={8}
+                onPointerDownOutside={() => {
+                  setOpen(false)
+                }}
                 className={cn(
                   'z-100 rounded-lg bg-[#1e2536]/90 backdrop-blur-md px-3 py-2 text-xs font-medium text-white shadow-2xl border border-white/10',
                   className

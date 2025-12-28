@@ -155,7 +155,6 @@ export const getSecurityLevel = (time: string): SecurityLevel => {
 }
 
 export const getPasswordFeedback = (password: string) => {
-  console.log(password)
   if (!password) return []
   const requirements = [
     { id: 'length', label: 'Increase length (min. 16 characters)', met: password.length >= 16 },

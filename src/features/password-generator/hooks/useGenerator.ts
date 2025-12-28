@@ -19,87 +19,68 @@ import {
 
 export const useGenerator = () => {
   // --- Persistent States ---
-  const [history, setHistory] = useLocalStorage<string[]>('pw_history', [])
-  const [length, setLength] = useState<number>(16)
+  const [length, setLength] = useState<number>(() => {
+    const saved = localStorage.getItem('pw_length')
+    return saved ? Number(saved) : 16
+  })
+  const [password, setPassword] = useState<string>('')
+
   const [savedLength, setSavedLength] = useLocalStorage<number>('pw_length', 16)
-  const debouncedLength = useDebounce(length, 400)
-
-  useEffect(() => {
-    setSavedLength(debouncedLength)
-  }, [debouncedLength, setSavedLength])
-
-  useEffect(() => {
-    setLength(savedLength)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
+  const [history, setHistory] = useLocalStorage<string[]>('pw_history', [])
   const [options, setOptions] = useLocalStorage<GeneratorOptions>('pw_generatorOptions', DEFAULT_OPTIONS)
   const [displaySettings, setDisplaySettings] = useLocalStorage<DisplaySettings>('pw_displaySettings', DEFAULT_SETTINGS)
 
-  const [password, setPassword] = useState<string>('')
+  const debouncedLength = useDebounce(length, 400)
+  const lastPassword = useRef<string>('')
 
   const regenerate = useCallback(() => {
     const absoluteMin = Math.max(MIN_LENGTH, options.minNumbers + options.minSpecial)
-
-    const validLength = length < absoluteMin ? absoluteMin : length
-
-    if (length < absoluteMin) {
-      setLength(absoluteMin)
-    }
-
-    const newPassword = generatePassword({ length: validLength, ...options })
-
-    setPassword(newPassword)
-  }, [length, options, setLength])
+    const validLength = Math.max(length, absoluteMin)
+    setPassword(generatePassword({ length: validLength, ...options }))
+  }, [length, options])
 
   useEffect(() => {
-    if (!password) {
-      regenerate()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    setSavedLength(debouncedLength)
 
-  // --- Generation Logic ---
-  const isFirstRender = useRef(true)
-  const lastDisplayedPassword = useRef<string>('')
+    const absoluteMin = Math.max(MIN_LENGTH, options.minNumbers + options.minSpecial)
+    const timer = setTimeout(() => {
+      if (debouncedLength >= absoluteMin) {
+        setPassword(generatePassword({ length: debouncedLength, ...options }))
+      }
+    }, 0)
+
+    return () => clearTimeout(timer)
+  }, [debouncedLength, options, setSavedLength])
 
   // --- Synchronization of History ---
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      lastDisplayedPassword.current = password
-      return
-    }
+    if (!password) return
 
-    if (password !== lastDisplayedPassword.current) {
-      const passwordToStore = lastDisplayedPassword.current
+    if (password !== lastPassword.current) {
+      const passwordToStore = lastPassword.current
+
       if (passwordToStore) {
         setHistory((prev) => {
           if (prev[0] === passwordToStore) return prev
           return [passwordToStore, ...prev].slice(0, 5)
         })
       }
-      lastDisplayedPassword.current = password
+      lastPassword.current = password
     }
   }, [password, setHistory])
 
   // --- Handlers ---
-  const handleLengthChange = (val: string | number) => {
-    const stringVal = val.toString()
-    if (stringVal === '') {
-      setLength(0)
-      return
-    }
-    const numValue = parseInt(stringVal, 10)
-    if (!isNaN(numValue)) {
-      setLength(numValue)
-    }
+  const handleLengthChange = (val: number) => {
+    if (!isNaN(val)) setLength(val)
   }
 
   const handleMinNumbersChange = (val: number) => {
-    const totalMins = val + options.minSpecial
-    if (totalMins > length) setLength(totalMins)
-    setOptions((prev) => ({ ...prev, minNumbers: val }))
+    setOptions((prev) => {
+      const newOptions = { ...prev, minNumbers: val }
+      const totalMins = val + prev.minSpecial
+      if (totalMins > length) setLength(totalMins)
+      return newOptions
+    })
   }
 
   const handleMinSpecialChange = (val: number) => {
@@ -121,9 +102,9 @@ export const useGenerator = () => {
 
   const score = useMemo(() => getStrength(password), [password])
   const crackTime = useMemo(() => getTimeToCrack(password), [password])
+  const suggestions = useMemo(() => getPasswordFeedback(password), [password])
   const securityLevel = useMemo(() => getSecurityLevel(crackTime), [crackTime])
   const securityLevelByScore = useMemo(() => getSecurityLevelByScore(score), [score])
-  const suggestions = useMemo(() => getPasswordFeedback(password), [password])
 
   return {
     // Data
@@ -134,9 +115,9 @@ export const useGenerator = () => {
     displaySettings,
     score,
     crackTime,
+    suggestions,
     securityLevel,
     securityLevelByScore,
-    suggestions,
     // Handlers
     regenerate,
     handleLengthChange,

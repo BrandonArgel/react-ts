@@ -32,12 +32,16 @@ export const Tooltip = ({ children, content, className }: TooltipProps) => {
             <TooltipPrimitive.Portal forceMount>
               <TooltipPrimitive.Content
                 asChild
+                side="top"
+                align="center"
                 sideOffset={8}
+                collisionPadding={10}
                 onPointerDownOutside={() => {
                   setOpen(false)
                 }}
                 className={cn(
-                  'z-100 rounded-lg bg-[#1e2536]/90 backdrop-blur-md px-3 py-2 text-xs font-medium text-white shadow-2xl border border-white/10',
+                  'z-100 max-w-70 rounded-lg bg-[#1e2536]/95 backdrop-blur-md px-3 py-2',
+                  'text-xs font-medium text-white shadow-2xl border border-white/10',
                   className
                 )}
               >

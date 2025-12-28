@@ -153,3 +153,24 @@ export const getSecurityLevel = (time: string): SecurityLevel => {
   if (t.includes('year') && !t.includes('centur')) return 'high'
   return 'safe'
 }
+
+export const getPasswordFeedback = (password: string) => {
+  console.log(password)
+  if (!password) return []
+  const requirements = [
+    { id: 'length', label: 'Increase length (min. 16 characters)', met: password.length >= 16 },
+    { id: 'upper', label: 'Include an uppercase letter', met: /[A-Z]/.test(password) },
+    { id: 'lower', label: 'Include a lowercase letter', met: /[a-z]/.test(password) },
+    { id: 'number', label: 'Add a number', met: /[0-9]/.test(password) },
+    { id: 'special', label: 'Use a special character', met: /[^A-Za-z0-9]/.test(password) }
+  ]
+
+  const suggestions = requirements
+    .filter((req) => !req.met)
+    .map((req) => ({
+      id: req.id,
+      message: req.label
+    }))
+
+  return suggestions
+}

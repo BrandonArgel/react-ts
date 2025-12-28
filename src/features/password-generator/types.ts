@@ -42,4 +42,9 @@ export const OPTION_KEYS = {
   MIN_SPECIAL: 'minSpecial'
 } as const
 
+export interface PasswordSuggestion {
+  id: string
+  message: string
+}
+
 export type OnOptionChange = (_key: keyof GeneratorOptions, _value: boolean | number) => void

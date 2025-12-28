@@ -26,12 +26,12 @@ export const Input = ({ label, error, className, type = 'text', ref, ...props }:
           ref={ref}
           type={inputType}
           className={cn(
-            'w-full bg-[#1e2536] border border-gray-700 rounded-md p-2 text-sm',
+            'w-full bg-surface border border-gray-700 rounded-md p-2 text-sm',
             'transition-all duration-200 outline-none',
-            'focus:border-blue-500 focus:ring-1 focus:ring-blue-500',
+            'focus:ring-1 focus:ring-blue-500',
             'disabled:opacity-50 disabled:cursor-not-allowed',
             isPassword && 'pr-10',
-            error && 'border-red-500 focus:border-red-500 focus:ring-red-500',
+            error && 'focus:ring-red-500 border-red-500 text-red-500',
             className
           )}
           {...props}

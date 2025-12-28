@@ -1,4 +1,3 @@
-// src/modules/password-generator/components/CrackTime.tsx
 import { cva, type VariantProps } from 'class-variance-authority'
 import { Info } from 'lucide-react'
 import { Card, Tooltip } from '@components/ui/'

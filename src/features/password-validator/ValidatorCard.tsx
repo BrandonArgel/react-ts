@@ -4,19 +4,21 @@ import {
   getSecurityLevel,
   getSecurityLevelByScore,
   getStrength,
-  getTimeToCrack
+  getTimeToCrack,
+  getPasswordFeedback
 } from '../password-generator/utils/password-utils'
-import { StrengthMeter } from '@components/password'
+import { PasswordSuggestions, StrengthMeter } from '@components/password'
 import { CrackTime } from '@components/password'
 import { useDebounce } from '@/hooks'
 
 export default function ValidatorCard() {
   const [password, setPassword] = useState('')
-  const debouncedInput = useDebounce(password, 500)
-  const score = useMemo(() => getStrength(debouncedInput), [debouncedInput])
-  const crackTime = useMemo(() => getTimeToCrack(debouncedInput), [debouncedInput])
+  const debouncedPassword = useDebounce(password, 500)
+  const score = useMemo(() => getStrength(debouncedPassword), [debouncedPassword])
+  const crackTime = useMemo(() => getTimeToCrack(debouncedPassword), [debouncedPassword])
   const securityLevel = useMemo(() => getSecurityLevel(crackTime), [crackTime])
   const securityLevelByScore = useMemo(() => getSecurityLevelByScore(score), [score])
+  const suggestions = useMemo(() => getPasswordFeedback(debouncedPassword), [debouncedPassword])
 
   return (
     <Card className="max-w-md mx-auto" variant="outline">
@@ -39,6 +41,7 @@ export default function ValidatorCard() {
 
         <div className="space-y-2">
           <StrengthMeter score={score} level={securityLevelByScore} />
+          <PasswordSuggestions password={debouncedPassword} suggestions={suggestions} />
           <CrackTime time={crackTime} level={securityLevel} />
         </div>
       </CardContent>

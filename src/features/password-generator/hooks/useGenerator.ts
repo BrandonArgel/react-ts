@@ -1,11 +1,12 @@
 import { useMemo, useEffect, useRef, useCallback, useState } from 'react'
-import { useLocalStorage } from '@/hooks/useLocalStorage'
+import { useDebounce, useLocalStorage } from '@/hooks'
 import {
   generatePassword,
   getSecurityLevel,
   getSecurityLevelByScore,
   getStrength,
-  getTimeToCrack
+  getTimeToCrack,
+  getPasswordFeedback
 } from '../utils/password-utils'
 import {
   GeneratorOptions,
@@ -19,25 +20,37 @@ import {
 export const useGenerator = () => {
   // --- Persistent States ---
   const [history, setHistory] = useLocalStorage<string[]>('pw_history', [])
-  const [length, setLength] = useLocalStorage<number>('pw_length', 16)
+  const [length, setLength] = useState<number>(16)
+  const [savedLength, setSavedLength] = useLocalStorage<number>('pw_length', 16)
+  const debouncedLength = useDebounce(length, 400)
+
+  useEffect(() => {
+    setSavedLength(debouncedLength)
+  }, [debouncedLength, setSavedLength])
+
+  useEffect(() => {
+    setLength(savedLength)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const [options, setOptions] = useLocalStorage<GeneratorOptions>('pw_generatorOptions', DEFAULT_OPTIONS)
   const [displaySettings, setDisplaySettings] = useLocalStorage<DisplaySettings>('pw_displaySettings', DEFAULT_SETTINGS)
 
   const [password, setPassword] = useState<string>('')
 
   const regenerate = useCallback(() => {
-    const newPassword = generatePassword({ length, ...options })
-    console.log('test')
+    const absoluteMin = Math.max(MIN_LENGTH, options.minNumbers + options.minSpecial)
 
-    if (password) {
-      setHistory((prev) => {
-        if (prev[0] === password) return prev
-        return [password, ...prev].slice(0, 5)
-      })
+    const validLength = length < absoluteMin ? absoluteMin : length
+
+    if (length < absoluteMin) {
+      setLength(absoluteMin)
     }
 
+    const newPassword = generatePassword({ length: validLength, ...options })
+
     setPassword(newPassword)
-  }, [length, options, password, setHistory])
+  }, [length, options, setLength])
 
   useEffect(() => {
     if (!password) {
@@ -71,10 +84,16 @@ export const useGenerator = () => {
   }, [password, setHistory])
 
   // --- Handlers ---
-  const handleLengthChange = (val: number) => {
-    if (isNaN(val)) return
-    const absoluteMin = Math.max(MIN_LENGTH, options.minNumbers + options.minSpecial)
-    setLength(val < absoluteMin ? absoluteMin : val)
+  const handleLengthChange = (val: string | number) => {
+    const stringVal = val.toString()
+    if (stringVal === '') {
+      setLength(0)
+      return
+    }
+    const numValue = parseInt(stringVal, 10)
+    if (!isNaN(numValue)) {
+      setLength(numValue)
+    }
   }
 
   const handleMinNumbersChange = (val: number) => {
@@ -104,6 +123,7 @@ export const useGenerator = () => {
   const crackTime = useMemo(() => getTimeToCrack(password), [password])
   const securityLevel = useMemo(() => getSecurityLevel(crackTime), [crackTime])
   const securityLevelByScore = useMemo(() => getSecurityLevelByScore(score), [score])
+  const suggestions = useMemo(() => getPasswordFeedback(password), [password])
 
   return {
     // Data
@@ -116,6 +136,7 @@ export const useGenerator = () => {
     crackTime,
     securityLevel,
     securityLevelByScore,
+    suggestions,
     // Handlers
     regenerate,
     handleLengthChange,

@@ -18,11 +18,7 @@ export const VisibilitySelector = ({ showStrength, showCrackTime, onToggle }: Vi
           </div>
         </summary>
 
-        <div
-          className="grid grid-cols-1 gap-3 mt-4 p-4 rounded-xl border border-border/50 bg-surface/30 
-                        transition-all duration-500 ease-in-out
-                        opacity-0 -translate-y-2.5 group-open:opacity-100 group-open:translate-y-0"
-        >
+        <div className="grid grid-cols-1 gap-3 mt-4 p-4 rounded-xl border border-border/50 bg-surface/30 transition-all duration-500 ease-in-out opacity-0 -translate-y-2.5 group-open:opacity-100 group-open:translate-y-0">
           <Checkbox label="Show Strength Meter" checked={showStrength} onChange={() => onToggle('strength')} />
           <Checkbox label="Show Time to Crack" checked={showCrackTime} onChange={() => onToggle('crackTime')} />
         </div>

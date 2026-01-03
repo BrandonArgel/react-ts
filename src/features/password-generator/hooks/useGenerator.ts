@@ -2,7 +2,7 @@ import { useMemo, useEffect, useRef, useCallback, useState } from 'react'
 import { useDebounce, useLocalStorage } from '@/hooks'
 import {
   generatePassword,
-  getSecurityLevel,
+  getSecurityLevelByTime,
   getSecurityLevelByScore,
   getStrength,
   getTimeToCrack,
@@ -103,7 +103,7 @@ export const useGenerator = () => {
   const score = useMemo(() => getStrength(password), [password])
   const crackTime = useMemo(() => getTimeToCrack(password), [password])
   const suggestions = useMemo(() => getPasswordFeedback(password), [password])
-  const securityLevel = useMemo(() => getSecurityLevel(crackTime), [crackTime])
+  const securityLevel = useMemo(() => getSecurityLevelByTime(crackTime), [crackTime])
   const securityLevelByScore = useMemo(() => getSecurityLevelByScore(score), [score])
 
   return {

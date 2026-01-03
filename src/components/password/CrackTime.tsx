@@ -27,7 +27,7 @@ export const CrackTime = ({ time, level }: CrackTimeProps) => {
     <Card variant="ghost" padding="sm" className={cn(crackTimeVariants({ level }))}>
       <div className="flex justify-between items-center">
         <div className="flex flex-col">
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-70">Time to Crack (2025 Est.)</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-70">Time to Crack (2026 Est.)</span>
 
           <span className="text-xl font-black tracking-tight mt-1 leading-none">{time}</span>
         </div>
@@ -35,8 +35,8 @@ export const CrackTime = ({ time, level }: CrackTimeProps) => {
         <div className="text-right shrink-0">
           <span className="text-[9px] block font-mono opacity-60 uppercase">Brute Force Rate</span>
           <div className="flex items-center gap-2 text-right justify-end">
-            <span className="text-[10px] font-bold block">100B / sec</span>
-            <Tooltip content="Calculated based on 100 billion guesses per second (2025 standard)">
+            <span className="text-[10px] font-bold block">1T / sec</span>
+            <Tooltip content="Calculated based on 1 trillion guesses per second.">
               <Info size={12} className="text-current cursor-help hover:opacity-80" />
             </Tooltip>
           </div>

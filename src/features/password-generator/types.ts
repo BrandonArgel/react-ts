@@ -8,6 +8,8 @@ export const DEFAULT_OPTIONS: GeneratorOptions = {
   number: true,
   special: true,
   avoidAmbiguous: false,
+  avoidRepeated: true,
+  avoidSequences: true,
   minNumbers: 1,
   minSpecial: 1
 }
@@ -23,6 +25,8 @@ export interface GeneratorOptions {
   number: boolean
   special: boolean
   avoidAmbiguous: boolean
+  avoidRepeated: boolean
+  avoidSequences: boolean
   minNumbers: number
   minSpecial: number
 }
@@ -38,6 +42,8 @@ export const OPTION_KEYS = {
   NUMBER: 'number',
   SPECIAL: 'special',
   AMBIGUOUS: 'avoidAmbiguous',
+  REPEATED: 'avoidRepeated',
+  SEQUENCES: 'avoidSequences',
   MIN_NUMBERS: 'minNumbers',
   MIN_SPECIAL: 'minSpecial'
 } as const

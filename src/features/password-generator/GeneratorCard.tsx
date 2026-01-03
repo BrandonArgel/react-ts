@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardContent } from '@components/ui'
 import { useGenerator } from './hooks/useGenerator'
 import { PasswordDisplay } from '../../components/password/PasswordDisplay'
+import { PasswordSuggestions } from '../../components/password/PasswordSuggestions'
 import { LengthControl } from '../../components/password/LengthControl'
 import { StrengthMeter } from '../../components/password/StrengthMeter'
 import { CrackTime } from '../../components/password/CrackTime'
@@ -27,7 +28,8 @@ export default function GeneratorCard() {
     handleMinSpecialChange,
     handleOptionChange,
     toggleDisplay,
-    clearHistory
+    clearHistory,
+    suggestions
   } = useGenerator()
 
   return (
@@ -43,10 +45,22 @@ export default function GeneratorCard() {
 
         <div className="space-y-2">
           {displaySettings.strength && <StrengthMeter score={score} level={securityLevelByScore} />}
+          {displaySettings.strength && (
+            <PasswordSuggestions
+              password={password}
+              suggestions={suggestions}
+              defaultMessage="Select some options to see suggestions."
+            />
+          )}
           {displaySettings.crackTime && <CrackTime time={crackTime} level={securityLevel} />}
         </div>
 
-        <OptionsSection options={options} onChange={handleOptionChange} />
+        <OptionsSection
+          options={options}
+          onChange={handleOptionChange}
+          onMinNumbersChange={handleMinNumbersChange}
+          onMinSpecialChange={handleMinSpecialChange}
+        />
 
         <AdvancedOptions
           options={options}

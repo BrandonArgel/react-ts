@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Card, CardHeader, CardContent, Input } from '@components/ui'
 import {
-  getSecurityLevel,
+  getSecurityLevelByTime,
   getSecurityLevelByScore,
   getStrength,
   getTimeToCrack,
@@ -16,7 +16,7 @@ export default function ValidatorCard() {
   const debouncedPassword = useDebounce(password, 500)
   const score = useMemo(() => getStrength(debouncedPassword), [debouncedPassword])
   const crackTime = useMemo(() => getTimeToCrack(debouncedPassword), [debouncedPassword])
-  const securityLevel = useMemo(() => getSecurityLevel(crackTime), [crackTime])
+  const securityLevel = useMemo(() => getSecurityLevelByTime(crackTime), [crackTime])
   const securityLevelByScore = useMemo(() => getSecurityLevelByScore(score), [score])
   const suggestions = useMemo(() => getPasswordFeedback(debouncedPassword), [debouncedPassword])
 
@@ -41,7 +41,11 @@ export default function ValidatorCard() {
 
         <div className="space-y-2">
           <StrengthMeter score={score} level={securityLevelByScore} />
-          <PasswordSuggestions password={debouncedPassword} suggestions={suggestions} />
+          <PasswordSuggestions
+            password={debouncedPassword}
+            suggestions={suggestions}
+            defaultMessage="Enter a password to see suggestions."
+          />
           <CrackTime time={crackTime} level={securityLevel} />
         </div>
       </CardContent>

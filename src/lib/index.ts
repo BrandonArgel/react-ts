@@ -1,2 +1,2 @@
 export * from './cn'
-export * from './randonmNumber'
+export * from './randomNumber'
